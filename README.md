@@ -22,9 +22,9 @@ In the "Precompiled Binaries for Windows" section, you need to download both
 Both are .zip files. Extract all files from both zips to the same directory, either:
 
 - C:\sqlite3 (if your laptop is your own and you have access rights to the C:\ root)
-- Your home folder (F:\ drive on University computers or C:\users\[username-here])
+- Your home folder (F:\ drive on University computers or C:\users\\[username-here])
 
-(Note that on university computers your C:\users\[username] folder might get erased periodically)
+(Note that on university computers your C:\users\\[username] folder might get erased periodically)
 
 ## Using SQLite3
 
