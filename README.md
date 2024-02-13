@@ -9,3 +9,4 @@ The following should be done in order:
 - [Getting Started With SQLite](./getting-started-with-sqlite.md)
 - [Using SQLite with Flask](./using-sql-with-flask.md)
 - [Refactoring Templates](./refactoring-templates.md)
+- [Extra Challenges for Clever Clogs](./extra-challenges.md)
