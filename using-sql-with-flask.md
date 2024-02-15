@@ -93,7 +93,7 @@ def form():
         return render_template('form.html')
     else:
         name = request.form['name']
-        age = request.form['location']
+        location = request.form['location']
         db = get_db() # Use the function we made earlier
         db.execute('insert into users (name, location) values (?, ?)', [name, location]) # Here we use an array of values whose order matches the order of the '?, ?' placeholders. Using placeholders binds Python values to SQL statements and avoids SQL injection attacks
         db.commit()
