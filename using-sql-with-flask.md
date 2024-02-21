@@ -168,3 +168,77 @@ def view_results():
 >
 > - Use the id field in each result to refer to that entity/user.
 > - You did [path params](https://pythonbasics.org/flask-tutorial-routes/#flask-route-params) on Monday, can you use them here?
+
+## Solutions
+
+### 1. Deleting Users
+
+- Create a flask route for deleting users.
+- Use the route to delete the user with the id of the passed path parameter.
+- Redirect to the results page
+
+```python
+@app.route('/delete-user/<id>', methods=['GET'])
+def delete_user(id):
+    db = get_db()
+    db.execute('DELETE from users where id = ?', [id])
+    db.commit()
+    return redirect('/results')
+```
+
+- Add a form to each user card in the results template
+- The form only needs a submit button but ensure that the method and action matches the route you just made
+
+```jinja
+<form method="GET" action="/delete-user/{{ result.id }}">
+    <input type="submit" value="Delete"/>
+</form>
+```
+
+### 2. Editing Users
+
+- Create a route that handles both
+  - GET to show the edit form, accepting an id parameter to find the user to edit.
+  - POST to accept the updated information from the submitted form
+
+```python
+@app.route('/edit-user/<id>', methods=['GET', 'POST'])
+def edit_user(id):
+    if request.method == 'GET':
+        db = get_db()
+        cur = db.execute('SELECT * from users WHERE id=?', [id])
+        result = cur.fetchone()
+        return render_template('edit.html', result=result)
+    name = request.form['name']
+    location = request.form['location']
+    db = get_db()
+    db.execute('UPDATE users SET name = ?, location = ? WHERE id = ?', [name, location, id])
+    db.commit()
+    return redirect('/results')
+```
+
+- Note that although the form is very similar to creating a user, this is using a separate template for editing, this is my preference but arguments could also be made for using the templating engine to handle both creating and editing from the same template
+- Create the template (mostly copied from form.html template)
+
+```jinja
+{% extends 'base.html' %}
+
+{% block title %}Edit User{% endblock %}
+
+{% block content %}
+
+    <h1>Edit User</h1>
+    <form method="POST" action="/edit-user/{{ result.id }}">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input class="form-control" type="text" id="name" name="name" value="{{ result.name }}">
+        </div>
+        <div class="form-group">
+            <label for="location">Location</label>
+            <input class="form-control" type="text" id="location" name="location" value="{{ result.location }}">
+        </div>
+        <button type="submit" class="btn btn-primary mt-1">Submit</button>
+    </form>
+
+{% endblock %}
+```
